@@ -46,7 +46,6 @@ def main_loop():
                     #TEST###############################
                     if 8 in puntos:
                         cx, cy = puntos[8]  # Coordenadas para el punto con id=8
-                        # Aquí puedes continuar con tu lógica, como crear un nuevo punto si id=8 e id=4 están "juntos"
                           
                         cx2, cy2 = puntos[4]  # Coordenadas para el punto con id=4
 
@@ -54,7 +53,7 @@ def main_loop():
                         distancia = np.sqrt((cx - cx2)**2 + (cy - cy2)**2)
 
                         # Umbral para determinar si los puntos están "juntos"
-                        umbral = 20  # Ajusta este valor según sea necesario
+                        umbral = 20  # Ajusta este valor según sea necesario (TOLERANCIAA)
 
                         # Si la distancia es menor que el umbral, crea un nuevo punto
                         if distancia < umbral:
