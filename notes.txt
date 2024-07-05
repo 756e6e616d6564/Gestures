@@ -1,0 +1,20 @@
+from multiprocessing import Process, Queue
+import time
+
+def background_task(queue):
+    # Simulación de alguna tarea en segundo plano
+    time.sleep(5)  # Espera 5 segundos
+    result = {"var1": 10, "var2": 20}
+    queue.put(result)
+
+if __name__ == "__main__":
+    queue = Queue()
+    process = Process(target=background_task, args=(queue,))
+    process.start()
+
+    print("Esperando resultados del proceso en segundo plano...")
+
+    process.join()  # Espera a que el proceso en segundo plano termine
+    result = queue.get()  # Obtiene los resultados del proceso en segundo plano
+
+    print("Resultados recibidos:", result)

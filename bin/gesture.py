@@ -15,12 +15,13 @@ def main_loop():
     global running, pTime, cTime
     while running:
 
-        time.sleep(0.015)
+        
 
         success, img = cap.read()
-
+        if cam == 0:
+            img =cv2.flip(img, 1) # Voltear la imagen
+        
         frame = cv2.resize(img, (video_width, video_height)) # Redimensionar la imagen
-
         img = frame
 
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
@@ -30,10 +31,12 @@ def main_loop():
         cTime = time.time()
         fps = 1/(cTime-pTime)
         pTime = cTime
-
+       
         conexiones = [
                     (0, 1), (1, 2), (2, 3), (3, 4),  # Pulgar
-                    (0, 5), (5, 6), (6, 7), (7, 8)  # Índice
+                    (0, 5), (5, 6), (6, 7), (7, 8),  # Índice
+                    #DEBUGGING
+                    (1, 5), (2, 5), (4, 8)
                     ]
 
         if results.multi_hand_landmarks: # Si se detecta una mano
@@ -43,12 +46,19 @@ def main_loop():
                 for id, lm in enumerate(handLms.landmark):
                     
                     h, w, c = img.shape # Obtener el alto, ancho y canales de la imagen
-                    cx, cy = int(lm.x*w), int(lm.y*h)
+                    x = lm.x
+                    y = lm.y
+
+                    x = round(x, 6)
+                    y = round(y, 6)
+                    
+                    print(h,'Height  ', w,'Width  ', x,'lmX  ', y,'lmY')
+                    cx, cy = int(x*w), int(y*h)
 
                     # Dibujar puntos en la imagen #
                     if (id == 4) or (id == 8) or (id == 0) or (id == 30):
-                        print(id, cx, cy) 
-                        #pass
+                        #print(id, cx, cy) 
+                        pass
                     puntos[id] = (cx, cy)
 
                     if id == 0 or id == 1 or id == 5: # Punto de la muñeca
@@ -78,18 +88,21 @@ def main_loop():
                         # Si la distancia es menor que el umbral, crea un nuevo punto
                         if distancia < umbral:
                             # Calcula el punto medio entre los dos puntos
-                            cx = (cx + cx2) // 2
-                            cy = (cy + cy2) // 2
+                            nx = (cx + cx2) // 2
+                            ny = (cy + cy2) // 2
 
                             id = "30"
-                            puntos[id] = (cx, cy)
+                            puntos[id] = (nx, ny)
                                                         
                             # Dibuja un nuevo círculo en el punto medio
                             cv2.circle(img, (cx, cy), 5, (0, 0, 255), cv2.FILLED)
 
-                            print(id, cx, cy)
+                        cv2.putText(img, str(puntos[8]), (cx, cy), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+                        cv2.putText(img, str(puntos[4]), (cx2, cy2), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+                        cv2.putText(img, str(round(distancia, 2)), (((cx + cx2) // 2), ((cy + cy2) // 2)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+                            
                     else:
-                        print("El punto con id=8 no ha sido detectado aún.")
+                        print("El punto 8 no ha sido detectado")
 
                     for start, end in conexiones:
                         # Obtén las coordenadas de inicio y fin de la conexión
@@ -100,6 +113,7 @@ def main_loop():
 
                         # Dibuja la línea entre los puntos
                         cv2.line(img, (start_x, start_y), (end_x, end_y), (255, 255, 255), 1)
+                    
 
                 
     #######################################################################
@@ -134,12 +148,21 @@ def main_loop():
         print("Ignoring empty camera frame.")
         return
     
-    return id, lm
+    return x, y
 
 ###### DECLARACIÓN DE VARIABLES #####
 
+
+
 # Inicializar la cámara
 cap = cv2.VideoCapture(0) # 0 para la cámara por defecto, ir subiendo números para otras cámaras ///  320x240 // 960x720
+if cv2.VideoCapture(0).isOpened() == True:
+    print("Cámara predeterminada iniciada - Modo espejo en uso")
+    cam = 0
+else:
+    print("Cámara no iniciada, Utilizando cámara 1")
+    cap = cv2.VideoCapture(1)
+    cam = 1
 video_width = 600
 video_height = 400
 
