@@ -1,5 +1,9 @@
 # Controlador por gestos
-
+> #
+> V 0.1B
+> >Controlador Gesture estable
+> > visualizador implementado correctamente.
+> #
 ###### (Dígase integración física-virtual)
 
 > ##
@@ -11,20 +15,22 @@
 > - Además, tiene que actuar sin restricción o limitante alguno sobre señales de *Panic* que genere el sistema 
 > ##
 
-El script Gesture es una herramienta que permite detectar y reconocer gestos realizados por los usuarios. A continuación, se presenta una estructura básica para su implementación:
+#### * EN TRABAJO DE CONSTRUCCIÓN *
 
-1. **Importar bibliotecas**: Comienza importando las bibliotecas necesarias para el reconocimiento de gestos, como OpenCV y NumPy.
+La fase actual del proyecto se basa en la estructuración de la plataforma adecuada para el reconocimiento de gestos y su posterior uso en diferentes sistemas para el control de lo que se requiera.
 
-2. **Inicializar la cámara**: Configura la cámara para capturar el video en tiempo real. Puedes utilizar la biblioteca OpenCV para acceder a la cámara y configurar sus propiedades.
+Actualmente se encuentra en una fase beta; se está desarrollando el "reconocedor" de visual, que posteriormente se utilizará para su procesamiento en un posible módulo.
 
-3. **Definir regiones de interés**: Define las regiones de interés en la imagen capturada donde se buscarán los gestos. Puedes utilizar técnicas de segmentación de imágenes para identificar estas regiones.
-
-4. **Capturar y preprocesar los fotogramas**: Captura los fotogramas de video en tiempo real y realiza el preprocesamiento necesario, como la eliminación de ruido y la normalización de la imagen.
-
-5. **Detectar y reconocer gestos**: Utiliza algoritmos de visión por computadora para detectar y reconocer los gestos realizados por el usuario. Puedes utilizar técnicas como el seguimiento de contornos, el análisis de movimiento y la comparación de características para identificar los gestos.
-
-6. **Interpretar los gestos**: Una vez detectados y reconocidos los gestos, interpreta su significado y realiza las acciones correspondientes. Puedes asignar acciones específicas a cada gesto, como desplazamiento de la pantalla, clics o comandos de voz.
-
-7. **Finalizar el programa**: Cuando el usuario finalice la interacción, asegúrate de liberar los recursos utilizados y cerrar la aplicación correctamente.
-
-Recuerda que esta es solo una estructura básica y que puedes personalizarla según tus necesidades y requisitos específicos. ¡Diviértete explorando el mundo de los gestos con el script Gesture!
+---
+> #
+> ##### *Requisitos indispensables:*
+> - Python _________________ == 3.10 *(exclusivamente)*
+> - Mediapipe ______________ >= 0.10.14
+> - OpenCV-contrib-python ____ >= 4.10.0.84
+> - OpenCV-python __________ >= 4.10.0.84
+> - OpenCV-python-headless __ >= 4.10.0.84  *(Por un error no detectado en los complementos opencv, estos tienen que ser instalados siguiendo el orden listado, del caso contrario, el programa no dectectará ninguno y por consecuencia, no funcionará)*
+> - Pyautogui >=0.9.54
+> - Matplotlib >= 3.9.0
+> - Numpy >= 2.0.0
+> - Threaded >= 4.2.0 *(Revisar versión e importaciones, puede que no sea necesario)*
+> #
