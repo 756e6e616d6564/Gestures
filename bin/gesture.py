@@ -16,10 +16,8 @@ def main_loop():
     while running:
 
         
-
         success, img = cap.read()
-        if cam == 0:
-            img =cv2.flip(img, 1) # Voltear la imagen
+        img = cv2.flip(img, 1) # Voltear la imagen
         
         frame = cv2.resize(img, (video_width, video_height)) # Redimensionar la imagen
         img = frame
@@ -143,12 +141,11 @@ def main_loop():
         if cv2.waitKey(1) & 0xFF == ord('q') or cv2.getWindowProperty('GEstuRE', cv2.WND_PROP_VISIBLE) < 1: # Cerrar la ventana con la tecla 'q' o el botón de cerrar
             stop_program()
             break            
-
-    if not success:
-        print("Ignoring empty camera frame.")
-        return
+        if success == False:
+            break
+    return id, lm
     
-    return x, y
+    
 
 ###### DECLARACIÓN DE VARIABLES #####
 
@@ -156,13 +153,7 @@ def main_loop():
 
 # Inicializar la cámara
 cap = cv2.VideoCapture(0) # 0 para la cámara por defecto, ir subiendo números para otras cámaras ///  320x240 // 960x720
-if cv2.VideoCapture(0).isOpened() == True:
-    print("Cámara predeterminada iniciada - Modo espejo en uso")
-    cam = 0
-else:
-    print("Cámara no iniciada, Utilizando cámara 1")
-    cap = cv2.VideoCapture(1)
-    cam = 1
+
 video_width = 600
 video_height = 400
 
@@ -180,12 +171,8 @@ puntos = {}  # Diccionario para almacenar las coordenadas de los puntos
 puntosPlus = {}
 
 if __name__ == '__main__':
-    try:
-        if os.path.exists('data/Benchmark Data/hardData/fpsLog.txt'):
-            os.remove('data/Benchmark Data/hardData/fpsLog.txt')
-    except:
-        if os.path.exists('../data/Benchmark Data/hardData/fpsLog.txt'):
-            os.remove('../data/Benchmark Data/hardData/fpsLog.txt')
+    if os.path.exists('data/Benchmark Data/hardData/fpsLog.txt'):
+        os.remove('data/Benchmark Data/hardData/fpsLog.txt')
 
     main_loop()
     cap.release()
